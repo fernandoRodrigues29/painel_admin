@@ -1,0 +1,20 @@
+balanço
+total
+pereciveis
+nao pereciveis
+
+formulario 
+tabela
+
+
+para rodar o json server
+va onde esta o arquivo .json e rode o comando no comando json-server
+
+json-server --watch db.json
+json-server --watch basedados.json
+
+  Resources
+  http://localhost:3000/estoque
+  http://localhost:3000/categoria
+  http://localhost:3000/status
+  http://localhost:3000/fornecedor

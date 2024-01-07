@@ -1,0 +1,119 @@
+{
+  "estoque": [
+    {
+      "id": "1",
+      "nome": "item padrão",
+      "descricao": " texto de descricao",
+      "quantidade": 5,
+      "fornecedor": "1",
+      "categoria": "1",
+      "status": "1",
+      "dataCad": "12-12-12",
+      "dataAlt": "12-12-12"
+    },
+    {
+      "id": "2",
+      "nome": "xpto",
+      "descricao": "xpto example",
+      "quantidade": 1,
+      "fornecedor": "1",
+      "categoria": 1,
+      "status": 1,
+      "dataCad": "19/12/2023 16:07:49",
+      "dataAlt": "19/12/2023 16:07:49"
+    },
+    {
+      "id": 3,
+      "nome": "queijo",
+      "descricao": "suiço",
+      "quantidade": 1,
+      "fornecedor": "1",
+      "categoria": 1,
+      "status": 1,
+      "dataCad": "19/12/2023 17:39:28",
+      "dataAlt": "19/12/2023 17:39:28"
+    },
+    {
+      "id": 4,
+      "nome": "xpp",
+      "descricao": "software",
+      "quantidade": 1,
+      "fornecedor": "1",
+      "categoria": 3,
+      "status": 3,
+      "dataCad": "19/12/2023 17:58:59",
+      "dataAlt": "19/12/2023 17:58:59"
+    },
+    {
+      "id": 5,
+      "nome": "qweqw",
+      "descricao": "qwewqe",
+      "quantidade": 1,
+      "fornecedor": "1",
+      "categoria": 3,
+      "status": 2,
+      "dataCad": "20/12/2023 15:20:02",
+      "dataAlt": "20/12/2023 15:20:02"
+    }
+  ],
+  "categoria": [
+    {
+      "id": 1,
+      "categoria": "categoria padrão"
+    },
+    {
+      "id": 2,
+      "categoria": "categoria padrão 2"
+    },
+    {
+      "id": 3,
+      "categoria": "categoria padrão 3"
+    }
+  ],
+  "status": [
+    {
+      "id": 1,
+      "status": "status padrão"
+    },
+    {
+      "id": 2,
+      "status": "status padrão 2"
+    },
+    {
+      "id": 3,
+      "status": "status padrão 3"
+    }
+  ],
+  "fornecedor": [
+    {
+      "id": 1,
+      "status": "fornecedor padrão"
+    },
+    {
+      "id": 2,
+      "status": "fornecedor padrão 2"
+    },
+    {
+      "id": 3,
+      "status": "fornecedor padrão 2"
+    }
+  ],
+  "grafico":[
+    {
+      "barra_mes":[
+        {
+          "dt":"Jan",
+          "qdt":123
+        }
+        ,{
+          "dt":"Fev",
+          "qdt":450
+        }
+        ,{
+          "dt":"Mar",
+          "qdt":753
+        }
+      ]
+    }
+  ]
+}

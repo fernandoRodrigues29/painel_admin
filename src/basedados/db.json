@@ -1,0 +1,30 @@
+{
+    "estoque":[
+        {
+            "id":"1",
+            "nome":"item padrão",
+            "descricao":" texto de descricao",
+            "quantidade":5,
+            "fornacedor":"1",
+            "categoria":"1",
+            "status":"1",
+            "dataCad":"12-12-12",
+            "dataAlt":"12-12-12"
+        }
+    ],
+    "categoria":[
+        {"id":1,"categoria":"categoria padrão"},
+        {"id":2,"categoria":"categoria padrão 2"},
+        {"id":3,"categoria":"categoria padrão 3"}
+    ],
+    "status":[
+        {"id":1,"status":"status padrão"},
+        {"id":2,"status":"status padrão 2"},
+        {"id":3,"status":"status padrão 3"}
+    ],
+    "fornecedor":[
+        {"id":1,"status":"fornecedor padrão"},
+        {"id":2,"status":"fornecedor padrão 2"},
+        {"id":3,"status":"fornecedor padrão 2"}
+    ]
+}
