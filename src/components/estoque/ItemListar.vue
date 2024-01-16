@@ -57,7 +57,7 @@
                                       class="avatar avatar-xs pull-up"
                                       title="Lilian Fuller"
                                     >
-                                      <img src="/assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                                      <img src="assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
                                     </li>
                                     <li
                                       data-bs-toggle="tooltip"
@@ -66,7 +66,7 @@
                                       class="avatar avatar-xs pull-up"
                                       title="Sophia Wilkerson"
                                     >
-                                      <img src="/assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                                      <img src="assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
                                     </li>
                                     <li
                                       data-bs-toggle="tooltip"
@@ -75,7 +75,7 @@
                                       class="avatar avatar-xs pull-up"
                                       title="Christina Parker"
                                     >
-                                      <img src="/assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                                      <img src="assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
                                     </li>
                                   </ul>
                                 </td>

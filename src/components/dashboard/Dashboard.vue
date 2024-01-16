@@ -25,7 +25,7 @@
                         <div class="col-sm-5 text-center text-sm-left">
                           <div class="card-body pb-0 px-0 px-md-4">
                             <img
-                              src="/assets/img/illustrations/man-with-laptop-light.png"
+                              src="assets/img/illustrations/man-with-laptop-light.png"
                               height="140"
                               alt="View Badge User"
                               data-app-dark-img="illustrations/man-with-laptop-dark.png"
@@ -139,7 +139,7 @@
                       <li class="d-flex mb-4 pb-1" v-for="item in listaProdutos" :key="item.id">
                         <div class="avatar flex-shrink-0 me-3">
                           <img
-                            src="/assets/img/icons/unicons/wallet.png"
+                            src="assets/img/icons/unicons/wallet.png"
                             alt="User"
                             class="rounded"
                           />
@@ -202,8 +202,7 @@ export default {
     async carregarListadeProdutos(){
       if(this.localStorageBD !== null){
         let todos = JSON.parse(this.localStorageBD)
-        this.listaProdutos = todos.estoque;
-        // console.log(this.listaProdutos);
+          this.listaProdutos = todos.estoque;
       }
         // const req = await fetch("http://localhost:3000/estoque");
         //   const data = await req.json();

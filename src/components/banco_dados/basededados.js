@@ -9,7 +9,7 @@ export default {
     methods:{
         async carregarBaseDados(){
             if(localStorage.getItem('basedadosestoque') === null){
-                const rs = await fetch('/db/basedados.json');
+                const rs = await fetch('db/basedados.json');
                     const db = await rs.json();
                     localStorage.setItem('basedadosestoque',JSON.stringify(db));
                     this.localStorageBD = db;
