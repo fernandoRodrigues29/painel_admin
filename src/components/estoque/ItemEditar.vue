@@ -8,7 +8,10 @@
                <div class="col-md-12">
                  <div class="card mb-4">
                    <h5 class="card-header">Editar Item</h5>
-                   <div class="card-body">
+                   <div class="card-body conteiner-well" >
+                    <div class="whell-page" v-if="item.id == 0 || item.id == null ">
+                          <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                    </div>
                     <div class="row">
                      
                       <div class="col-md-3 col-3">
@@ -75,16 +78,36 @@ import mixinBD from '@/components/banco_dados/basededados.js';
     mixins:[mixinBD],
        data(){
            return{
-               item:{},
+               item:{
+                id:0,
+                nome:'',
+                descricao:'',
+                quantidade:'',
+                fornecedor:'',
+                categoria:'',
+                status:'',
+                dataCad:'',
+                dataAlt:''
+              },
                categorias:[],
                status:[]
            }
        },
+       watch:{
+          localStorageBD(valor){
+            this.resgatarDado();
+            this.carregarCategorias();
+            this.carregarStatus();
+          },
+          item(v){
+            console.log('atualizado item:',v);
+          }
+        },
        methods:{
            async resgatarDado(){
             const id = this.$route.params.id;
             // const data = await this.retornarEstoqueId(id);
-              const rs = await this.resgatarDadosPorId(id)
+              const rs = await this.resgatarDadosPorId(id);
                 const data = rs[0]; 
                     this.item.id=data.id;
                     this.item.nome=data.nome;
@@ -97,30 +120,16 @@ import mixinBD from '@/components/banco_dados/basededados.js';
                     this.item.dataAlt=data.dataAlt;
            },
            carregarCategorias(){
-              //  fetch(`http://localhost:3000/categoria`)
-              //  .then((response)=>response.json())
-              //  .then((data)=>{
-              //    this.categorias = data;
-              //  });
                 let todos = JSON.parse(this.localStorageBD);
                   this.categorias = todos.categoria;
            }, 
            carregarStatus(){
-              //  fetch(`http://localhost:3000/status`)
-              //  .then((response)=>response.json())
-              //  .then((data)=>{
-              //    this.status = data;
-              //  });
                 let todos = JSON.parse(this.localStorageBD);
                   this.status = todos.status;
            },
            async retornarEstoqueId(id){
                 const data = await this.resgatarDadosPorId(id)
-                    // const url = `http://localhost:3000/estoque/${id_esqtoque}`;
-                    //    const req = await fetch(url);
-                    //       const data = await req.json();
-
-                            return data;
+                 return data;
            },
            async retornarEstoqueTodos(){
                      const url = `http://localhost:3000/estoque`;
@@ -143,46 +152,21 @@ import mixinBD from '@/components/banco_dados/basededados.js';
                    "id":this.item.id,
                    "nome":this.item.nome,
                    "descricao":this.item.descricao,
-                   "quantidade":1,
-                   "fornacedor":"1",
+                   "quantidade":this.item.quantidade,
+                   "fornacedor":this.item.fornecedor,
                    "categoria":this.item.categoria,
                    "status":this.item.status,
                    "dataCad":this.item.dataCad,
                    "dataAlt":`${dia} ${hora}`
                  } 
+                  console.log('controle: editar:',data);
+                    let url =`http://localhost/APICardapioLaravel/public/api/estoque_editar/${this.item.id}`;
+                      let verbo = 'POST'
+                        this.EnviarDados(url,data,verbo);
                  //usando o local storage 
-                      this.atualizarItem(data);
-                      this.$router.push('/estoque/listar');
+                      // this.atualizarItem(data);
+                      // this.$router.push('/estoque/listar');
 
-
-                      // console.log('elemento indice aqui resgatado',todos.estoque[indice]);
-                        // this.$router.push('/estoque/listar');
-                 // const data = rs[0]; 
-                    // this.item.id=data.id;
-                    // this.item.nome=data.nome;
-                    // this.item.descricao=data.descricao;
-                    // this.item.quantidade=data.quantidade;
-                    // this.item.fornecedor=data.fornecedor;
-                    // this.item.categoria=data.categoria;
-                    // this.item.status=data.status;
-                    // this.item.dataCad=data.dataCad;
-                    // this.item.dataAlt=data.dataAlt;
-                 
-                 
-                 //  const dataJsonFormat = JSON.stringify(data);
-                  //  console.log(dataJsonFormat);
-
-                   //PUT    /posts/1
-                   //enviar para o aquivo
-
-                    //  fetch(`http://localhost:3000/estoque/${this.item.id}`,{
-                    //    method:"PUT",
-                    //    headers:{
-                    //      'Content-Type':'application/json'
-                    //    },
-                    //    body:dataJsonFormat
-                    //  });
-                    //   this.$router.push('/estoque/listar');
                  }
        },
        async mounted(){

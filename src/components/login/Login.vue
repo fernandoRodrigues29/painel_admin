@@ -19,7 +19,10 @@
               <!-- /Logo -->
               <h4 class="mb-2">Login</h4>
               <p class="mb-4"></p>
-
+              <p>
+                {{ usuario }}
+                {{ senha }}
+              </p>
               <form id="formAuthentication" class="mb-3"  method="POST">
                 <div class="mb-3">
                   <label for="email" class="form-label">Email or Username</label>
@@ -30,6 +33,7 @@
                     name="email-username"
                     placeholder="Enter your email or username"
                     value="usuario@teste.com"
+                    v-model="usuario"
                     autofocus
                   />
                 </div>
@@ -49,6 +53,7 @@
                       placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                       aria-describedby="password"
                       value="123"
+                      v-model="senha"
                     />
                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                   </div>
@@ -104,12 +109,55 @@ export default {
     mixins:[mixinBD],
     data(){
       return{
-       
+       url:'http://localhost/APICardapioLaravel/public/api/login',
+       usuario:'usuario@email.com',
+       senha:'123'
       }
     },
     methods:{
-        navegar(){
-            this.$router.push('/');
+        async navegar(){
+            // this.$router.push('/');
+            const data ={
+              usuario:this.usuario,
+              senha:this.senha
+            };
+            // this.comunicacaoComApi(data);
+          //  this.teste();
+          this.login(data);
+        },
+        login(data){
+                      const opcoes ={
+                        method:"POST",
+                        headers:{ "Content-type":"application/json"},
+                        body:JSON.stringify(data)
+                      };
+                      fetch(this.url,opcoes)
+                      .then(response=>response.json())
+                      .then((data)=>{
+                          localStorage.setItem('chave_acesso_admEstoque',JSON.stringify(data.access_token));
+                          this.$router.push('/');
+                      });
+        },
+        async comunicacaoComApi(data){
+              const dataJsonFormat = JSON.stringify(data); 
+                    const req = await fetch(this.url,{
+                        method:"POST",
+                        headers:{'Content-Type':'application/json'},
+                        body:dataJsonFormat
+                      });
+                      console.log('retorno:',req);
+        },
+        teste(){
+                      const opcoes ={
+                        method:"POST",
+                        headers:{ "Content-type":"application/json"},
+                        body:JSON.stringify({produto:'vindo do frontend'})
+                      };
+                      fetch("http://localhost/APICardapioLaravel/public/api/testando",opcoes)
+                      .then(response=>response.json())
+                      .then((data)=>{
+                        console.log('retorno dados:',data);
+                      });
         }
     },
     components:{

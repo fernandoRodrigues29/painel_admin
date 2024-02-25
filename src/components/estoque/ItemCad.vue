@@ -13,7 +13,10 @@
                        
                       </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body conteiner-well">
+                      <div class="whell-page" v-if="whellSpin">
+                          <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                      </div>
                       <form method="POST" @submit.prevent="acao($event)">
                       <div class="mb-2">
                         <label for="nome-estoque" class="form-label">Name</label>
@@ -39,18 +42,20 @@
                       </div>
                       <div class="mb-2">
                         <label for="categoria-estoque" class="form-label">Categoria</label>
-                        <select class="form-select" id="categoria-estoque" aria-label="Default select example"  v-model="item.categoria">
-                          <option selected>--Categoria--</option>
-                          <option v-for="categ in categorias" :key="categ.id" :value="categ.id">{{categ.categoria}}</option>
-                          
-                        </select>
+                        <searchFilter 
+                          :lista="categorias" 
+                          idValue="id" 
+                          valorValue="categoria" 
+                          @receberObjeto="pegarObjetoCategoria"/>
                       </div>
                       <div class="mb-2">
                         <label for="status-estoque" class="form-label">Status</label>
-                        <select class="form-select" id="status-estoque" aria-label="Default select example"  v-model="item.status">
-                          <option selected>--Status--</option>
-                          <option v-for="estatus in status" :key="estatus.id" :value="estatus.id">{{estatus.status}}</option>
-                        </select>
+                        <searchFilter 
+                          :lista="lstatus" 
+                          idValue="id" 
+                          valorValue="status" 
+                          @receberObjeto="pegarObjetoStatus"/>
+
                       </div>
                       <div class="mt-3">
                         <button class="btn btn-outline-primary btnlargo btn-lg" type="submit" id="button-addon1">Cadastrar</button>
@@ -73,38 +78,60 @@
 
 <script>
  import mixinBD from '@/components/banco_dados/basededados.js';
+ import searchFilter from '@/components/formularios/SearchFilter.vue';
+
     export default {
       mixins:[mixinBD],
         data(){
             return{
                 item:{},
                 categorias:[],
-                status:[]
+                lstatus:[],
+                whellSpin:false,
+                listaArr: [
+                    { id:1, cidade:"São Paulo" },
+                    { id:2, cidade:"Rio de Janeiro" },
+                    { id:3, cidade:"Belo Horizonte" },
+                    { id:4, cidade:"Espirito Santo" },
+                    { id:5, cidade:"Santos" },
+                    { id:6, cidade:"Guarulhos" },
+                    { id:7, cidade:"Campos" },
+                    { id:8, cidade:"Campinas" },
+                    { id:9, cidade:"São Bernardo" },
+                    { id:10, cidade:"Três Marias" },
+                ],
             }
         },
+        watch:{
+          localStorageBD(){
+            this.carregarCategorias();
+            this.carregarStatus();
+          }
+        },
         methods:{
+            pegarObjeto(data){
+              //onde vai receber os dados para update
+              console.log('data retornando',data);
+            },
+            pegarObjetoCategoria(data){
+              this.item.categoria = data.id;
+            },
+            pegarObjetoStatus(data){
+              this.item.status = data.id;
+            },
             carregarCategorias(){
-                // fetch(`http://localhost:3000/categoria`)
-                // .then((response)=>response.json())
-                // .then((data)=>{
-                //   this.categorias = data;
-                // });
                 let todos = JSON.parse(this.localStorageBD);
-                this.categorias = todos.categoria;
+                if(todos !== null){
+                    this.categorias = todos.categoria;
+                  }
             }, 
-            carregarStatus(){
-                // fetch(`http://localhost:3000/status`)
-                // .then((response)=>response.json())
-                // .then((data)=>{
-                //   this.status = data;
-                // });
+           carregarStatus(){
                 let todos = JSON.parse(this.localStorageBD);
-                this.status = todos.status;
+                if(todos !== null){
+                  this.lstatus = todos.status;
+                }
             },
             async retornarIdEstoque(){
-              // let id = localStorage.getItem('id');
-              // const req = await fetch("http://localhost:3000/estoque");
-              //   const data = await req.json();
                 let todos = JSON.parse(this.localStorageBD);
                 const data = todos.estoque;
                   let ultimo = data[data.length -1];
@@ -113,7 +140,7 @@
             }, 
             async acao(e){
               e.preventDefault();
-              
+              this.whellSpin=true;
               const dataehora = new Date();
               const dia = dataehora.toLocaleDateString();
               const hora = dataehora.toLocaleTimeString();
@@ -127,27 +154,26 @@
                     "nome":this.item.nome,
                     "descricao":this.item.descricao,
                     "quantidade":1,
-                    "fornacedor":"1",
+                    "fornecedor":1,
                     "categoria":this.item.categoria,
                     "status":this.item.status,
                     "dataCad":`${dia} ${hora}`,
                     "dataAlt":`${dia} ${hora}`
                   } 
-                  //cadastrar
-                  this.cadastrarItemLocalStorage(data)
-                    // const url = `http://localhost:3000/estoque`;
-                      //  const req = await fetch(url,{
-                      //   method:"POST",
-                      //   headers:{'Content-Type':'application/json'},
-                      //   body:dataJsonFormat
-                      // });
-
-                      this.$router.push('/estoque/listar');
+                  console.log("Dados para serem inseridos no estoque:",data);
+                  const url = 'http://localhost/APICardapioLaravel/public/api/estoque';
+                    this.cadastrarItemBD(url,data);
+                    this.whellSpin=false;
+                      //redirecionar  
+                       this.$router.push('/estoque/listar');
                   }
         },
-        mounted(){
-          this.carregarCategorias()
+        async created(){
+          this.carregarCategorias();
           this.carregarStatus()
+        },
+        components:{
+          searchFilter
         }
     }
 </script>

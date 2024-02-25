@@ -41,13 +41,12 @@
                       <div class="col-md-6 col-lg-6 mt-2">
                         <div class="card">
                           <div class="card-body">
-                            <div
-                              class="card-title d-flex align-items-start justify-content-between"
-                            >
-                              <span class="fw-semibold d-block mb-1"
-                                >Status</span
-                              >
-                              <h3 class="card-title mb-2">{{cStatus}}%</h3>
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                              <div>
+                                <span class="fw-semibold d-block mb-1">Status</span>
+                                <p>Itens Presente</p>
+                              </div>
+                              <h3 class="card-title mb-2">{{cStatus}}</h3>
                             </div>
                           </div>
                         </div>
@@ -55,13 +54,12 @@
                       <div class="col-md-6 col-lg-6 mt-2">
                         <div class="card">
                           <div class="card-body">
-                            <div
-                              class="card-title d-flex align-items-start justify-content-between"
-                            >
-                              <span class="fw-semibold d-block mb-1"
-                                >Categoria</span
-                              >
-                              <h3 class="card-title mb-2">{{cCategoria}}%</h3>
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                              <div>
+                                <span class="fw-semibold d-block mb-1">Categoria</span>
+                                <span>Cadastrados</span>
+                              </div>
+                              <h3 class="card-title mb-2">{{cCategoria}}</h3>
                              
                             </div>
                           </div>
@@ -70,12 +68,11 @@
                       <div class="col-md-6 col-lg-6 mt-2">
                         <div class="card">
                           <div class="card-body">
-                            <div
-                              class="card-title d-flex align-items-start justify-content-between"
-                            >
-                              <span class="fw-semibold d-block mb-1"
-                                >Items</span
-                              >
+                            <div class="card-title d-flex align-items-start justify-content-between" >
+                              <div>
+                                <span class="fw-semibold d-block mb-1">Total</span>
+                                <p>itens cadastrados</p>
+                              </div>
                               <h3 class="card-title mb-2">{{cItens}}</h3>
                             </div>
                           </div>
@@ -84,12 +81,11 @@
                       <div class="col-md-6 col-lg-6 mt-2">
                         <div class="card">
                           <div class="card-body">
-                            <div
-                              class="card-title d-flex align-items-start justify-content-between"
-                            >
-                              <span class="fw-semibold d-block mb-1"
-                                >Ocupação</span
-                              >
+                            <div class="card-title d-flex align-items-start justify-content-between" >
+                              <div>
+                                <span class="fw-semibold d-block mb-1" >Metas</span>
+                                <span>Taxa de ocupção atingindo!</span>
+                              </div>
                               <h3 class="card-title mb-2">{{cOculp}}%</h3>
                             </div>
                           </div>
@@ -134,9 +130,14 @@
                       </div>
                     </div>
                   </div>
-                  <div class="card-body">
-                    <ul class="p-0 m-0">
-                      <li class="d-flex mb-4 pb-1" v-for="item in listaProdutos" :key="item.id">
+                  <div class="card-body lista-produtos-div  conteiner-well">
+                    <div class="whell-page-min" v-if="listaProdutos.length == 0">
+                          <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                    </div>
+                    <ul  class="p-0 m-0">
+                      <li class="d-flex mb-4 pb-1 lista-produtos" v-for="item in listaProdutos" 
+                      :key="item.id"
+                       @click="redirecionar(item.id)">
                         <div class="avatar flex-shrink-0 me-3">
                           <img
                             src="assets/img/icons/unicons/wallet.png"
@@ -199,23 +200,25 @@ export default {
     };
   },
   methods:{
+    //Token is Expired
     async carregarListadeProdutos(){
       if(this.localStorageBD !== null){
         let todos = JSON.parse(this.localStorageBD)
           this.listaProdutos = todos.estoque;
+          this.cItens = todos.estoque.length;
+         
       }
-        // const req = await fetch("http://localhost:3000/estoque");
-        //   const data = await req.json();
-            // this.listaProdutos = data;
-            // console.log('lista:',data)
+
     },
     async carregarDadosGrafMes(){
         // const req = await fetch("http://localhost:3000/grafico");
         //   const data = await req.json();
         if(this.localStorageBD !== null){
           let todos = JSON.parse(this.localStorageBD);
-          const data = todos.grafico;
-          this.barrMes = data[0].barra_mes;
+          console.log('[carregar graficos] teste',todos);
+          // const data = todos.grafico;
+         //mokar outro
+          //this.barrMes = data[0].barra_mes;
         }
     }
    ,contadorStatus(){
@@ -237,13 +240,20 @@ export default {
       }
    }
    ,contadorItens(){
-      if(this.cItens < 120)
-      {
-        setTimeout(()=>{
-          this.cItens += 1 ;
-          this.contadorItens()
-        },25);
-      }
+      // if(this.cItens < 120)
+      // {
+      //   setTimeout(()=>{
+      //     this.cItens += 1 ;
+      //     this.contadorItens()
+      //   },25);
+      // }
+      const cont =  this.cItens;
+        let contItem = setInterval(() => {
+          this.cItens += 1;
+        }, 25);
+          if(cont == this.cItens){
+            clearInterval(contItem);
+          }
    }
    ,contadorOculp(){
       if(this.cOculp < 23)
@@ -253,8 +263,22 @@ export default {
           this.contadorOculp()
         },25);
       }
-   }
+   },
+   redirecionar(id){
+    this.$router.push(`/estoque/editar/${id}`);
+  },
+  verificar_Token(){
+    const token = localStorage.getItem('chave_acesso_admEstoque');
+    if(token == null){
+      alert("Acesso negado, faça login para acessar o sistema!");
+    }
+  }
 
+  },
+  watch:{
+    localStorageBD(valor){
+      this.carregarListadeProdutos();
+    }
   },
   components: {
     GraficoLinha,
@@ -263,14 +287,27 @@ export default {
   created(){
     this.contadorStatus();
     this.contadorCategoria();
-    this.contadorItens();
     this.contadorOculp();
+    this.verificar_Token();
   },
   mounted(){
-    this.carregarListadeProdutos();
+    // this.carregarListadeProdutos();
     this.carregarDadosGrafMes();
+    this.contadorItens();
   }
 };
 </script>
 
-<style></style>
+<style scoped>
+  .lista-produtos{
+    cursor:pointer;
+  }
+
+  .lista-produtos-div{
+    max-height: 380px;
+    overflow-y: scroll;
+  }
+  .lista-produtos-div::-webkit-scrollbar{
+    display: none;
+  }
+</style>

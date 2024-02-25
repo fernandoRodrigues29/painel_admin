@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Guard from  '../services/middleware'
+
 import HomeView from '../views/HomeView.vue'
 import DashHome from '../components/Dashborad.vue'
 import Grafico from '../components/Grafico.vue'
@@ -29,6 +31,7 @@ const routes = [
     path: '/',
     name: 'home',
     component: Principal,
+    beforeEnter:Guard.auth,
     children:[
       {
         path: '/',

@@ -13,7 +13,7 @@
               </router-link>
             </li>
             <li class="menu-item " @click="exibirSubMenu">
-              <a @click.prevent="navegar()" href="#" class="menu-link">
+              <a @click.prevent="navegar()" href="#" class="menu-link alert-danger">
                 <i class="bx bx-power-off me-2"></i>
                 <div data-i18n="Analytics">Sair</div>
               </a>
@@ -41,7 +41,9 @@
 </template>
 
 <script>
+import mixinBD from '@/components/banco_dados/basededados.js';
 export default {
+  mixins:[mixinBD],
     name:"Menu",
     data(){
       return{
@@ -56,6 +58,7 @@ export default {
         sublist.style.maxHeight = sublist.style.maxHeight ? null : sublist.scrollHeight + 'px';
       },
       navegar(){
+            this.sairSistema();
             this.$router.push('/login');
         }
     }

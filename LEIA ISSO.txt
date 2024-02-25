@@ -6,6 +6,20 @@ nao pereciveis
 formulario 
 tabela
 
+---atualização 02-02-2024-----
+        usar a api para gardar dados e arquivos
+	   logar via api
+	OK - filtro na tabela e pagina principal
+		alerta para valores monores eerros de formulario
+	tabela com cores
+	
+        formulario com arquivo
+	dashboard com numeros reais
+dashboard lista de ultimos cadastros ,com limite e clickavel
+redireciona para pagina de edição
+	
+------------------------------
+
 
 para rodar o json server
 va onde esta o arquivo .json e rode o comando no comando json-server

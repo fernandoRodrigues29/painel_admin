@@ -15,14 +15,20 @@
                           </div>
                           <div class="col-md-3 col-3 text-right">
                             <div class="input-group">
+                            
                               <input
                                 type="text"
                                 class="form-control"
                                 placeholder="Pesquisa"
                                 aria-label="Recipient's username"
                                 aria-describedby="button-addon2"
+                                v-model="pesquisa"
+                                @keydown.enter="pesquisar()"
+                                @keyup="pesquisar()"
                               />
-                              <button class="btn btn-outline-primary" type="button" id="button-addon2">
+                              <button class="btn btn-outline-primary" type="button" id="button-addon2" 
+                              @click="pesquisar"
+                              >
                                 <i class="bx bx-search "></i>
                               </button>
                             </div>
@@ -31,7 +37,10 @@
                         <div>
                           
                         </div>
-                        <div class="table-responsive text-nowrap">
+                        <div v-if="lista.length == 0">
+                          <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                        </div>
+                        <div v-else class="table-responsive text-nowrap">
                           <table class="table">
                             <thead>
                               <tr>
@@ -43,10 +52,12 @@
                               </tr>
                             </thead>
                             <tbody class="table-border-bottom-0 corpo-tabela">
-                              <!-- {{ lista }} -->
+                             
                               <tr class="table-default" v-for="item in lista" :key="item.id">
 
-                                <td><i class="fab fa-sketch fa-lg text-warning me-3"></i> <strong>{{item.nome}}</strong></td>
+                                <td><i class="fab fa-sketch fa-lg text-warning me-3"></i> 
+                                  <router-link class="item-nome" :to="`/estoque/editar/${item.id}`"><strong>{{item.nome}}</strong></router-link>
+                                </td>
                                 <td>{{item.descricao}}</td>
                                 <td class="d-none">
                                   <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
@@ -119,7 +130,8 @@
          data(){
              return{
                  items:[{}],
-                 lista:[]
+                 lista:[],
+                 pesquisa:''
              }
          },
          methods:{
@@ -128,54 +140,59 @@
                   const indice = this.lista.findIndex(el=> el.id === identificador);
                     this.lista.splice(indice,1);
               //trocar fetch
-              // fetch(`http://localhost:3000/estoque/${id}`,{
-              //          method:"DELETE",
-              //          headers:{
-              //            'Content-Type':'application/json'
-              //          }
-              //        })
-              //        .then((dat)=>{
-              //         this.carregar();
-              //        });
              }, 
              acao(){
                  alert('que legal, está funcioanado!');
              },
              async carregarStatus(){
-                // const req = await fetch("http://localhost:3000/status");
-                // const data = await req.json();
                 let todos = JSON.parse(this.localStorageBD);
-                let data = todos.status;
-                    return data;
+               if(todos != null){
+                 let data = todos.status;
+                     return data;
+               }
+               return null;
              },
              async carregar(){
               const statusMapa = await this.carregarStatus();
                 let todos = JSON.parse(this.localStorageBD);
-                let data = todos.estoque;
-                    data.map((estoque)=>{
-                      statusMapa.map((status)=>{
-                        if(estoque.status == status.id){
-                          estoque.status=status.status;
+                  if(todos !== null){
+                    let data = todos.estoque;
+                        if( data){
+                            data.map((estoque)=>{
+                              statusMapa.map((el)=>{
+                                if(estoque.status == el.id){
+                                  estoque.status=el.status;
+                                }
+                              });
+                            });
+  
+                            console.log('todos data:',data);  
+                            this.lista = data;
+                        }
+                  }
+              
+             },
+             async pesquisar(){
+                
+                  if(this.pesquisa.length === 0){
+                    this.carregar();
+                  }
+                  if(this.pesquisa.length > 1){
+                      this.lista = this.lista.filter((e)=> {
+                        if(e.nome.includes(this.pesquisa)){
+                          return e
                         }
                       });
-                    });  
-                    this.lista = data;
-              
-              // fetch(`http://localhost:3000/estoque`)
-              // .then((response)=>response.json())
-              // .then((data)=>{
-              //   data.map((estoque)=>{
-              //     statusMapa.map((status)=>{
-              //       if(estoque.status == status.id){
-              //         estoque.status=status.status;
-              //       }
-              //     });
-              //   });
-              //   this.lista = data;
-              // });
-
+                  }
              }
+
+
          },
+         watch:{
+          localStorageBD(valor){
+            this.carregar();
+          }
+        },
          created(){
              this.carregar();
          }
@@ -189,4 +206,10 @@
      .corpo-tabela{
       height: 10vh;
      }
+     /**item lista */
+     .item-lista{
+      color: rgb(128, 128, 128);
+     }
+     
+
  </style>

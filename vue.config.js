@@ -5,10 +5,19 @@
 //   ? '/admPage/'
 //   : '/'
 // })
+
+//frontEndEstoqueVue
 //local admPage
+
+// module.exports = {
+//   publicPath: process.env.NODE_ENV === 'production'
+//   ? '/admPage/' 
+//   : '/'
+// }
+
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production'
-  ? '/admPage/' 
+  ? '/frontEndEstoqueVue/' 
   : '/'
 }
 
